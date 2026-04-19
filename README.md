@@ -56,6 +56,14 @@ To ensure comparability, products with different packaging sizes were normalized
 
 In cases where product characteristics significantly affect price (e.g. egg size), a stricter approach was applied: I controlled for product size differences by segmenting eggs into size categories rather than aggregating them. This ensured that comparisons remained structurally valid.
 
+### 📌 Handling Missing Products
+
+During data collection, not all products were available across every supermarket chain. For example, certain SKUs such as not-from-concentrate orange juice were not offered in Alcampo, and some size-specific products (e.g. medium eggs) were not consistently available across all chains.
+
+To ensure data integrity and avoid distortions in the analysis, rows corresponding to unavailable products were excluded from the dataset, rather than being represented as empty (NaN) entries. This prevents incorrect aggregations (e.g. averages, counts) during data analysis.
+
+This approach ensures that all calculations are based only on valid, observed data points, while maintaining transparency about product availability limitations across chains.
+
 ### 📊 Key Performance Indicators (KPIs)
 
 The analysis was designed around three groups of KPIs:
