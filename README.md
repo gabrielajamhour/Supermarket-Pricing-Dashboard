@@ -68,6 +68,30 @@ To ensure data integrity and avoid distortions in the analysis, rows correspondi
 
 This approach ensures that all calculations are based only on valid, observed data points, while maintaining transparency about product availability limitations across chains.
 
+### 📌 Consumer-Relevant Metrics
+
+While price per unit (€/kg, €/L, €/unit) was used as the primary normalization metric, additional consumer-relevant metrics were selectively introduced where applicable.
+
+For certain cleaning products:
+
+* Laundry liquid and dishwasher gel were evaluated using cost per use, based on the number of washes indicated on the packaging
+* For products already measured per unit (e.g. capsules or tablets), price per unit was considered equivalent to cost per use
+
+For all other products (e.g. food categories), cost per use was not applicable and therefore left empty.
+
+This approach ensures that each category is evaluated using the most relevant metric from a consumer perspective, rather than applying a single metric uniformly.
+
+### 📌 Data Collection Methodology
+| Chain     |	Source Collection | Date  |	Method            |
+| --------- | ----------------- | ----- | ----------------- |
+| Mercadona |	Official website  | 19/04 |	Manual extraction |
+| Consum	  | Official website  | 19/04 |	Manual extraction |
+| Carrefour |	Official website  | 19/04 |	Manual extraction |
+| Dia	      | Official website  | 19/04 |	Manual extraction |
+| Alcampo   |	Official website  | 19/04 | Manual extraction |
+
+All prices were collected from official supermarket websites on the same day to ensure temporal consistency. This approach minimizes bias due to price fluctuations and ensures comparability across chains.
+
 ### 📊 Key Performance Indicators (KPIs)
 
 The analysis was designed around three groups of KPIs:
