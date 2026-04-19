@@ -18,7 +18,7 @@ The analysis focuses on five supermarket chains operating in Spain:
 * Dia
 * Alcampo
 
-Originally, Lidl was considered as part of the competitive set. However, Consum was included instead of Lidl due to data accessibility constraints and its strong regional presence in the Valencian market. This decision allowed for a more reliable and consistent data collection process, while maintaining a relevant representation of the local market.
+Originally, Lidl was considered as part of the competitive set. However, Consum was included instead of Lidl due to data accessibility constraints (website availability) and its strong regional presence in the Valencian market. This decision allowed for a more reliable and consistent data collection process, while maintaining a relevant representation of the local market.
 
 ### 🧺 Product Categories
 
