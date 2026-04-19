@@ -37,8 +37,6 @@ The following principles guided dataset design:
 
 Analyze pricing strategies and competitive positioning across major supermarket chains, combining data analysis with business-oriented insights.
 
----
-
 ### 🏪 Competitive Set
 
 * Mercadona
@@ -49,8 +47,6 @@ Analyze pricing strategies and competitive positioning across major supermarket 
 
 > Consum was included instead of Lidl due to data accessibility constraints and its strong regional presence in the Valencian market.
 
----
-
 ### 🧺 Product Categories
 
 * Dairy
@@ -59,7 +55,7 @@ Analyze pricing strategies and competitive positioning across major supermarket 
 * Fresh Produce
 * Snacks
 
-A consistent basket of **27 core SKUs** was defined across categories.
+A consistent basket of **~30 core SKUs** was defined across categories.
 
 ---
 
@@ -73,8 +69,6 @@ Exact product matches were not always available across chains. Therefore:
 
 > Products were selected based on **functional equivalence**, ensuring comparability at the category level rather than exact SKU level.
 
----
-
 ### ⚖️ Handling Packaging Variability
 
 Products differed in size and format (e.g. 375g vs 625g, 4x125g vs 8x125g).
@@ -84,8 +78,6 @@ To ensure comparability:
 * Products were grouped into **approximate size categories**
 * Prices were normalized using **€/kg, €/L, or €/unit**
 
----
-
 ### 🥚 Controlling for Product Characteristics
 
 For products where size affects pricing:
@@ -93,18 +85,9 @@ For products where size affects pricing:
 * Eggs were segmented by size (M vs L)
 * Closest equivalents were selected when standard formats were unavailable
 
----
-
 ### 📌 Handling Missing Products
 
-Unavailable products were:
-
-* **Excluded from the dataset**
-* Not represented as empty (NaN) rows
-
-This ensures accurate aggregation and avoids distortions.
-
----
+Unavailable products were excluded from the dataset instead of being represented as empty (NaN) rows. This ensures accurate aggregation and avoids distortions.
 
 ### 📌 Consumer-Relevant Metrics
 
@@ -115,8 +98,6 @@ For cleaning products:
 
 Other categories use standard unit pricing.
 
----
-
 ### 📌 Brand Benchmarks
 
 Selected national brands were included to complement private label analysis:
@@ -124,10 +105,9 @@ Selected national brands were included to complement private label analysis:
 * Kellogg's (cereals)
 * Danone (yogurt)
 * Fairy (dishwasher tablets)
+* Lay's (salted crisps)
 
 When unavailable in a chain, observations were treated as missing.
-
----
 
 ### 📌 Data Collection Methodology
 
@@ -161,8 +141,6 @@ Each observation includes:
 * price_per_unit
 * date
 
----
-
 ### 🧠 Data Quality & Consistency
 
 To ensure analytical rigor:
@@ -172,11 +150,9 @@ To ensure analytical rigor:
 * Prices were normalized across all observations
 * Missing values were handled explicitly
 
----
-
 ### 📦 Dataset Summary
 
-* **27 core SKUs**
+* **~30 core SKUs**
 * **5 supermarket chains**
 * Structured for consistent cross-chain comparison
 
