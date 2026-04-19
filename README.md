@@ -6,9 +6,7 @@ The first phase of the project focused on defining a **clear, realistic, and ana
 
 ### 🎯 Objective
 
-The main objective of the project is to:
-
-> Analyze pricing strategies and competitive positioning across major supermarket chains, combining data analysis with business-oriented insights.
+The main objective of the project is to analyze pricing strategies and competitive positioning across major supermarket chains, combining data analysis with business-oriented insights.
 
 ### 🏪 Competitive Set
 
@@ -20,11 +18,7 @@ The analysis focuses on five supermarket chains operating in Spain:
 * Dia
 * Alcampo
 
-Originally, Lidl was considered as part of the competitive set. However:
-
-> *“Consum was included instead of Lidl due to data accessibility constraints and its strong regional presence in the Valencian market.”*
-
-This decision allowed for a more reliable and consistent data collection process, while maintaining a relevant representation of the local market.
+Originally, Lidl was considered as part of the competitive set. However, Consum was included instead of Lidl due to data accessibility constraints and its strong regional presence in the Valencian market. This decision allowed for a more reliable and consistent data collection process, while maintaining a relevant representation of the local market.
 
 ### 🧺 Product Categories
 
@@ -42,9 +36,7 @@ Within each category, a **consistent basket of 6–8 SKUs** was defined.
 
 One of the key challenges was that **exact product matches are not always available across all supermarkets**.
 
-To address this, the following approach was adopted:
-
-> *“Due to differences in product assortment across chains, exact product matches were not always available. Therefore, products were selected based on functional equivalence within each category, ensuring comparability at the category level rather than exact SKU level.”*
+To address this, the following approach was adopted due to differences in product assortment across chains, exact product matches were not always available. Therefore, products were selected based on functional equivalence within each category, ensuring comparability at the category level rather than exact SKU level.
 
 For example:
 
@@ -58,21 +50,11 @@ Products often differed in:
 * weight (e.g. 375g vs 625g cereals)
 * format (e.g. yogurt packs 4x125g vs 8x125g)
 
-To ensure comparability:
-
-> *“Products with different packaging sizes were normalized using price per unit (€/kg or €/L) to ensure comparability.”*
-
-Additionally:
-
-> *“Products were grouped into approximate weight categories (e.g. ~500g) and normalized using price per unit to ensure consistency.”*
+To ensure comparability, products with different packaging sizes were normalized using price per unit (€/kg or €/L). Additionally, products were grouped into approximate weight categories (e.g. ~500g) and normalized using price per unit to ensure consistency.
 
 ### 🥚 Controlling for Product Characteristics
 
-In cases where product characteristics significantly affect price (e.g. egg size), a stricter approach was applied:
-
-> *“I controlled for product size differences by segmenting eggs into size categories rather than aggregating them.”*
-
-This ensured that comparisons remained structurally valid.
+In cases where product characteristics significantly affect price (e.g. egg size), a stricter approach was applied: I controlled for product size differences by segmenting eggs into size categories rather than aggregating them. This ensured that comparisons remained structurally valid.
 
 ### 📊 Key Performance Indicators (KPIs)
 
@@ -140,9 +122,7 @@ Each product was recorded following a **standardized structure**, including:
 
 ### 🧠 Data Consistency & Methodology
 
-To ensure data quality and analytical rigor:
-
-> *“I standardized product definitions, normalized all prices per unit, handled packaging variability through approximate categories, and validated consistency across chains before analysis.”*
+To ensure data quality and analytical rigor, I standardized product definitions, normalized all prices per unit, handled packaging variability through approximate categories, and validated consistency across chains before analysis.
 
 Key methodological decisions included:
 
