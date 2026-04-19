@@ -81,6 +81,16 @@ For all other products (e.g. food categories), cost per use was not applicable a
 
 This approach ensures that each category is evaluated using the most relevant metric from a consumer perspective, rather than applying a single metric uniformly.
 
+### 📌 Brand Benchmarks (refined)
+
+Selected national brand products were included as benchmarks to complement private label comparisons.
+
+Where possible, the same brand was used across all chains (e.g. Danone for yogurts, Kellogg's for cereals).
+
+When a brand was not available in a specific chain, the observation was treated as missing rather than substituted.
+
+This approach ensures consistency in benchmarking while preserving the validity of cross-chain comparisons.
+
 ### 📌 Data Collection Methodology
 | Chain     |	Source Collection | Date  |	Method            |
 | --------- | ----------------- | ----- | ----------------- |
