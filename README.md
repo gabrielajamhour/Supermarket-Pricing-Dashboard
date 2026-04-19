@@ -1,16 +1,45 @@
 # 🛒 Supermarket Pricing Dashboard
 
-## 📌 Phase 1 — Scope Definition
+**End-to-end competitive pricing analysis of 5 Spanish supermarket chains**, combining structured data collection, analytical rigor, and business-oriented insights.
 
-The first phase of the project focused on defining a **clear, realistic, and analytically robust scope** before collecting any data. This step was essential to ensure that all subsequent analysis would be consistent, comparable, and meaningful.
+## 🧠 Methodology (Key Decisions)
+
+This project focuses on ensuring **comparability across heterogeneous supermarket assortments**, where identical products are not always available.
+
+The following principles guided dataset design:
+
+* **Functional equivalence over exact matching**
+  When identical SKUs were not available, products were selected based on their functional role (e.g. mainstream chocolate cereals), ensuring category-level comparability.
+
+* **Unit normalization for fair comparison**
+  All prices were standardized using price per unit (€/kg, €/L, €/unit) to account for differences in packaging size.
+
+* **Approximate size grouping**
+  Products with varying formats (e.g. 375g vs 625g) were grouped into approximate size tiers (e.g. ~500g).
+
+* **Segmentation when product characteristics affect price**
+  For products such as eggs, where size impacts pricing, categories were split (e.g. M vs L).
+
+* **Segment consistency over packaging consistency**
+  When trade-offs arose, priority was given to comparing equivalent product segments (e.g. private label vs private label).
+
+* **Explicit handling of missing products**
+  Unavailable products were excluded from the dataset to avoid distortions in aggregation.
+
+* **Consumer-relevant metrics where applicable**
+  Cost per use (€/wash or €/cycle) was introduced for cleaning products where relevant.
+
+---
+
+## 📌 Project Overview
 
 ### 🎯 Objective
 
-The main objective of the project is to analyze pricing strategies and competitive positioning across major supermarket chains, combining data analysis with business-oriented insights.
+Analyze pricing strategies and competitive positioning across major supermarket chains, combining data analysis with business-oriented insights.
+
+---
 
 ### 🏪 Competitive Set
-
-The analysis focuses on five supermarket chains operating in Spain:
 
 * Mercadona
 * Consum
@@ -18,11 +47,11 @@ The analysis focuses on five supermarket chains operating in Spain:
 * Dia
 * Alcampo
 
-Originally, Lidl was considered as part of the competitive set. However, Consum was included instead of Lidl due to data accessibility constraints (website availability) and its strong regional presence in the Valencian market. This decision allowed for a more reliable and consistent data collection process, while maintaining a relevant representation of the local market.
+> Consum was included instead of Lidl due to data accessibility constraints and its strong regional presence in the Valencian market.
+
+---
 
 ### 🧺 Product Categories
-
-To ensure comparability across chains, the analysis was structured around five core product categories:
 
 * Dairy
 * Breakfast
@@ -30,135 +59,101 @@ To ensure comparability across chains, the analysis was structured around five c
 * Fresh Produce
 * Snacks
 
-Within each category, a **consistent basket of 6–8 SKUs** was defined.
+A consistent basket of **27 core SKUs** was defined across categories.
+
+---
+
+## 📊 Phase 1 — Scope Definition
+
+The first phase focused on designing a **clear and analytically robust framework** before data collection.
 
 ### 🧠 Product Selection Logic
 
-One of the key challenges was that **exact product matches are not always available across all supermarkets**.
+Exact product matches were not always available across chains. Therefore:
 
-To address this, the following approach was adopted due to differences in product assortment across chains, exact product matches were not always available. Therefore, products were selected based on functional equivalence within each category, ensuring comparability at the category level rather than exact SKU level.
+> Products were selected based on **functional equivalence**, ensuring comparability at the category level rather than exact SKU level.
 
-For example:
-
-* Chocolate cereals were compared as a category (mainstream segment), not as identical brands.
-* Private label and branded products were included depending on availability.
+---
 
 ### ⚖️ Handling Packaging Variability
 
-Products often differed in:
+Products differed in size and format (e.g. 375g vs 625g, 4x125g vs 8x125g).
 
-* weight (e.g. 375g vs 625g cereals)
-* format (e.g. yogurt packs 4x125g vs 8x125g)
+To ensure comparability:
 
-To ensure comparability, products with different packaging sizes were normalized using price per unit (€/kg or €/L). Additionally, products were grouped into approximate weight categories (e.g. ~500g) and normalized using price per unit to ensure consistency.
+* Products were grouped into **approximate size categories**
+* Prices were normalized using **€/kg, €/L, or €/unit**
+
+---
 
 ### 🥚 Controlling for Product Characteristics
 
-In cases where standard pack sizes (e.g. 12 units) were not available, the closest private label alternative was selected (e.g. 10-unit packs in Dia), prioritising product segment consistency over packaging size. All comparisons were normalized using price per unit.
+For products where size affects pricing:
 
-For laundry detergent, private label products were prioritised across all chains. Where multiple sizes were available, products closest to a ~3L standard were selected to reduce variability in packaging size while maintaining segment consistency.
+* Eggs were segmented by size (M vs L)
+* Closest equivalents were selected when standard formats were unavailable
 
-When faced with trade-offs between packaging consistency and product segment consistency, I prioritised segment alignment to preserve the validity of price comparisons.
+---
 
 ### 📌 Handling Missing Products
 
-During data collection, not all products were available across every supermarket chain. For example, certain SKUs such as not-from-concentrate orange juice were not offered in Alcampo, and some size-specific products (e.g. medium eggs) were not consistently available across all chains.
+Unavailable products were:
 
-To ensure data integrity and avoid distortions in the analysis, rows corresponding to unavailable products were excluded from the dataset, rather than being represented as empty (NaN) entries. This prevents incorrect aggregations (e.g. averages, counts) during data analysis.
+* **Excluded from the dataset**
+* Not represented as empty (NaN) rows
 
-This approach ensures that all calculations are based only on valid, observed data points, while maintaining transparency about product availability limitations across chains.
+This ensures accurate aggregation and avoids distortions.
+
+---
 
 ### 📌 Consumer-Relevant Metrics
 
-While price per unit (€/kg, €/L, €/unit) was used as the primary normalization metric, additional consumer-relevant metrics were selectively introduced where applicable.
+For cleaning products:
 
-For certain cleaning products:
+* Laundry liquid and dishwasher gel → **cost per use**
+* Capsules and tablets → **price per unit = cost per use**
 
-* Laundry liquid and dishwasher gel were evaluated using cost per use, based on the number of washes indicated on the packaging
-* For products already measured per unit (e.g. capsules or tablets), price per unit was considered equivalent to cost per use
+Other categories use standard unit pricing.
 
-For all other products (e.g. food categories), cost per use was not applicable and therefore left empty.
+---
 
-This approach ensures that each category is evaluated using the most relevant metric from a consumer perspective, rather than applying a single metric uniformly.
+### 📌 Brand Benchmarks
 
-### 📌 Brand Benchmarks (refined)
+Selected national brands were included to complement private label analysis:
 
-Selected national brand products were included as benchmarks to complement private label comparisons.
+* Kellogg's (cereals)
+* Danone (yogurt)
+* Fairy (dishwasher tablets)
 
-Where possible, the same brand was used across all chains (e.g. Danone for yogurts, Kellogg's for cereals).
+When unavailable in a chain, observations were treated as missing.
 
-When a brand was not available in a specific chain, the observation was treated as missing rather than substituted.
-
-This approach ensures consistency in benchmarking while preserving the validity of cross-chain comparisons.
+---
 
 ### 📌 Data Collection Methodology
-| Chain     |	Source Collection | Date  |	Method            |
-| --------- | ----------------- | ----- | ----------------- |
-| Mercadona |	Official website  | 19/04 |	Manual extraction |
-| Consum	  | Official website  | 19/04 |	Manual extraction |
-| Carrefour |	Official website  | 19/04 |	Manual extraction |
-| Dia	      | Official website  | 19/04 |	Manual extraction |
-| Alcampo   |	Official website  | 19/04 | Manual extraction |
 
-All prices were collected from official supermarket websites on the same day to ensure temporal consistency. This approach minimizes bias due to price fluctuations and ensures comparability across chains.
+| Chain     | Source           | Date  | Method            |
+| --------- | ---------------- | ----- | ----------------- |
+| Mercadona | Official website | 19/04 | Manual extraction |
+| Consum    | Official website | 19/04 | Manual extraction |
+| Carrefour | Official website | 19/04 | Manual extraction |
+| Dia       | Official website | 19/04 | Manual extraction |
+| Alcampo   | Official website | 19/04 | Manual extraction |
 
-### 📊 Key Performance Indicators (KPIs)
+All prices were collected on the same day to ensure **temporal consistency**.
 
-The analysis was designed around three groups of KPIs:
-
-#### Price KPIs
-
-* Average price by chain and category
-* Price index (relative to market average = 100)
-* Price per unit (€/kg, €/L, €/unit)
-
-#### Competitive Positioning KPIs
-
-* Cheapest chain per category
-* Most expensive chain per category
-* Price gap (%)
-
-#### Brand Structure KPIs
-
-* Private label share
-* Private label price premium/discount vs branded products
-
-### ⚙️ Constraints
-
-The project was developed under the following constraints:
-
-* Manual data collection (no scraping in MVP)
-* One price snapshot per product per chain (with a second planned later)
-* No store-level variation (one representative price per chain)
-* Focus on the Spanish market (Valencia region)
-
-### ✅ Definition of “Done”
-
-The MVP is considered complete when:
-
-* The dashboard allows filtering by chain, category, and brand type
-* It clearly identifies the cheapest chain per category
-* It includes at least 3 actionable insights
-* The tool is deployed and publicly accessible
+---
 
 ## 📊 Phase 2 — Dataset Creation
 
-Once the scope was clearly defined, the next step was to build a **structured and reliable dataset**.
+### 🧾 Data Structure
 
-### 🧾 Data Collection Approach
-
-Data was collected manually from:
-
-* official supermarket websites
-* publicly available product listings
-
-Each product was recorded following a **standardized structure**, including:
+Each observation includes:
 
 * product_id
 * product_name
 * package_size
 * brand
-* private_label (yes/no)
+* private_label
 * category
 * chain
 * price (€)
@@ -166,29 +161,63 @@ Each product was recorded following a **standardized structure**, including:
 * price_per_unit
 * date
 
-### 🧠 Data Consistency & Methodology
+---
 
-To ensure data quality and analytical rigor, I standardized product definitions, normalized all prices per unit, handled packaging variability through approximate categories, and validated consistency across chains before analysis.
+### 🧠 Data Quality & Consistency
 
-Key methodological decisions included:
+To ensure analytical rigor:
 
-* Using **functional equivalence** when exact matches were unavailable
-* Treating missing products as **missing values**, not forcing substitutions
-* Normalizing all prices using **€/kg, €/L, or €/unit**
-* Maintaining consistent product definitions across all chains
+* Product definitions were standardized
+* Packaging variability was controlled through approximation
+* Prices were normalized across all observations
+* Missing values were handled explicitly
 
-### 📦 Dataset Structure
+---
 
-The dataset was designed to balance:
+### 📦 Dataset Summary
 
-* **comparability** (same product logic across chains)
-* **realism** (reflecting actual market availability)
+* **27 core SKUs**
+* **5 supermarket chains**
+* Structured for consistent cross-chain comparison
 
-The final dataset includes 27 core SKUs across 5 supermarket chains, with structured product definitions enabling consistent cross-chain comparison.
+---
 
-This phase demonstrates the ability to translate a business problem into a structured analytical framework, ensuring that data collection supports meaningful and defensible insights.
+## 📊 Key Performance Indicators (KPIs)
 
-### 🧭 Next Step
+### Price KPIs
 
-With the dataset completed, the project moves into: **Phase 3 — Data Analysis**, where pricing patterns, competitive positioning, and strategic insights will be extracted.
+* Average price by chain and category
+* Price index (market average = 100)
+* Price per unit
 
+### Competitive Positioning
+
+* Cheapest chain per category
+* Most expensive chain per category
+* Price gap (%)
+
+### Brand Structure
+
+* Private label share
+* Private label vs branded price gap
+
+---
+
+## ⚙️ Constraints
+
+* Manual data collection (no scraping)
+* Single price snapshot (second planned)
+* No store-level variation
+* Focus on Valencia region
+
+---
+
+## 🧭 Next Step
+
+➡️ **Phase 3 — Data Analysis**
+
+Focus:
+
+* Pricing patterns
+* Competitive positioning
+* Strategic insights
