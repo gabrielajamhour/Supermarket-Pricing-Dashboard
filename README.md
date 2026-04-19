@@ -174,7 +174,7 @@ The dataset was designed to balance:
 * **comparability** (same product logic across chains)
 * **realism** (reflecting actual market availability)
 
-The final dataset includes 27 SKUs across 5 supermarket chains, resulting in a structured dataset ready for analysis.
+The final dataset includes 27 core SKUs across 5 supermarket chains, with structured product definitions enabling consistent cross-chain comparison.
 
 This phase demonstrates the ability to translate a business problem into a structured analytical framework, ensuring that data collection supports meaningful and defensible insights.
 
