@@ -54,7 +54,11 @@ To ensure comparability, products with different packaging sizes were normalized
 
 ### 🥚 Controlling for Product Characteristics
 
-In cases where product characteristics significantly affect price (e.g. egg size), a stricter approach was applied: I controlled for product size differences by segmenting eggs into size categories rather than aggregating them. This ensured that comparisons remained structurally valid.
+In cases where standard pack sizes (e.g. 12 units) were not available, the closest private label alternative was selected (e.g. 10-unit packs in Dia), prioritising product segment consistency over packaging size. All comparisons were normalized using price per unit.
+
+For laundry detergent, private label products were prioritised across all chains. Where multiple sizes were available, products closest to a ~3L standard were selected to reduce variability in packaging size while maintaining segment consistency.
+
+When faced with trade-offs between packaging consistency and product segment consistency, I prioritised segment alignment to preserve the validity of price comparisons.
 
 ### 📌 Handling Missing Products
 
