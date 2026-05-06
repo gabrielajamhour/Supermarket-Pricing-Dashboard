@@ -31,6 +31,10 @@ h1, h2, h3 {
     border: 1px solid #E8E2D8;
     border-radius: 12px;
 }
+
+[data-testid="stDataFrame"] {
+    overflow-x: auto;
+}
             
 .stMultiSelect [data-baseweb="tag"] {
     background-color: #6B8F71 !important;
@@ -80,7 +84,7 @@ st.title("Supermarket Pricing Dashboard")
 st.markdown(
     """
     Competitive pricing analysis across five Spanish supermarket chains:
-    **Mercadona, Consum, Carrefour, Dia, and Alcampo**.
+    **Mercadona, Consum, Carrefour, Dia and Alcampo**.
     """
 )
 
@@ -189,9 +193,9 @@ def calculate_price_index(data):
 # Calculate price index
 indexed_df = calculate_price_index(analysis_df)
 
-# Chart 1: Price Index by chain
+# Section 1: Overall price positioning
+st.markdown("---")
 st.header("1. Overall price positioning")
-st.subheader("Price Index by Chain")
 
 chain_index = (
     indexed_df.groupby("chain")["price_index"]
@@ -219,6 +223,8 @@ fig_chain.update_layout(
     paper_bgcolor="white",
     font=dict(color=PALETTE["dark"]),
 )
+
+fig_chain.update_xaxes(range=[90, 110])
 
 st.plotly_chart(fig_chain, use_container_width=True)
 
@@ -256,9 +262,9 @@ else:
         "Select at least two chains to compare price positioning."
     )
 
-# Chart 2: Heatmap
+# Section 2: Category-level positioning
+st.markdown("---")
 st.header("2. Category-level positioning")
-st.subheader("Price Index by Category and Chain")
 
 category_chain = (
     indexed_df.groupby(["category", "chain"])["price_index"]
@@ -292,49 +298,33 @@ insight_box(
     "Pricing leadership varies by category, suggesting that chains do not follow a single low-price strategy across the full basket."
 )
 
-# Chart 3: Cheapest chain per category
+# Section 3: Cheapest chain per category
+st.markdown("---")
 st.header("3. Cheapest chain by category")
 
 cheapest = category_chain.loc[
     category_chain.groupby("category")["price_index"].idxmin()
-].sort_values("price_index")
+].sort_values("category")
 
-fig_cheapest = px.bar(
-    cheapest,
-    x="price_index",
-    y="category",
-    orientation="h",
-    text="chain",
-    color="chain",
-    color_discrete_map=CHAIN_COLORS,
-    labels={
-        "price_index": "Price Index",
-        "category": "",
-        "chain": "Cheapest Chain"
-    }
+cheapest_display = cheapest.copy()
+
+cheapest_display["Category"] = cheapest_display["category"].map(
+    lambda x: CATEGORY_LABELS.get(x, x.title())
 )
 
-fig_cheapest.add_vline(x=100, line_dash="dash", line_color=PALETTE["muted"])
+cheapest_display["Cheapest Chain"] = cheapest_display["chain"]
 
-fig_cheapest.update_traces(
-    textposition="outside",
-    textfont=dict(
-        size=13,
-        color=PALETTE["dark"],
-        family="Arial Black"
-    )
+cheapest_display["Price Index"] = cheapest_display["price_index"].round(1)
+
+cheapest_display = cheapest_display[
+    ["Category", "Cheapest Chain", "Price Index"]
+]
+
+st.dataframe(
+    cheapest_display,
+    use_container_width=True,
+    hide_index=True
 )
-
-fig_cheapest.update_layout(
-    showlegend=False,
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-    font=dict(color=PALETTE["dark"]),
-    xaxis_title="Price Index",
-    yaxis_title=""
-)
-
-st.plotly_chart(fig_cheapest, use_container_width=True)
 
 best_category = cheapest.iloc[0]["category"]
 best_chain_category = cheapest.iloc[0]["chain"]
@@ -342,11 +332,12 @@ best_category_index = cheapest.iloc[0]["price_index"]
 
 insight_box(
     f"{best_chain_category} is the strongest category-level price leader, "
-    f"with the lowest observed category index in {best_category} "
+    f"with the lowest observed category index in {CATEGORY_LABELS.get(best_category, best_category.title())} "
     f"({best_category_index:.1f})."
 )
 
-# Chart 4: Basket simulation
+# Section 4: Fixed basket cost
+st.markdown("---")
 st.header("4. Fixed basket cost")
 
 basket_df = analysis_df[
@@ -401,7 +392,8 @@ insight_box(
     "based only on comparable private-label products available across all chains."
 )
 
-# Chart 5: Temporal comparison
+# Section 5: Price stability over time
+st.markdown("---")
 st.header("5. Price stability over time")
 
 temporal_df = df.copy()
@@ -436,7 +428,7 @@ if pivot_time.shape[1] >= 2:
 
     col1, col2 = st.columns(2)
     col1.metric("Stable prices", f"{stable_share:.0f}%")
-    col2.metric("Meaningful changes", changed_products)
+    col2.metric("Prices changed >1%", changed_products)
 
     insight_box(
         f"{stable_share:.0f}% of comparable product-chain pairs changed by 1% or less, "
@@ -489,9 +481,60 @@ else:
     insight_box("Temporal comparison requires at least two collection dates.")
 
 with st.expander("View detailed price changes"):
-    st.dataframe(changes.sort_values("percent_change", ascending=False))
+    changes_display = changes.copy()
+    changes_display = changes_display[changes_display["percent_change"].abs() > 1].copy()
+
+    changes_display["direction"] = changes_display["percent_change"].apply(
+        lambda x: "Increase" if x > 0 else "Decrease"
+    )
+
+    changes_display["percent_change"] = changes_display["percent_change"].round(1)
+
+    def format_changes_table(data):
+        formatted = data.copy()
+
+        formatted["category"] = formatted["category"].map(
+            lambda x: CATEGORY_LABELS.get(x, x.title())
+        )
+
+        formatted = formatted.rename(columns={
+            "product_id": "Product",
+            "chain": "Chain",
+            "category": "Category",
+            "percent_change": "Change (%)"
+        })
+
+        return formatted[["Product", "Chain", "Category", "Change (%)"]]
+
+    increases = (
+        changes_display[changes_display["direction"] == "Increase"]
+        .sort_values("percent_change", ascending=False)
+    )
+
+    decreases = (
+        changes_display[changes_display["direction"] == "Decrease"]
+        .sort_values("percent_change")
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("#### Price increases")
+        st.dataframe(
+            format_changes_table(increases),
+            use_container_width=True,
+            hide_index=True
+        )
+
+    with col2:
+        st.markdown("#### Price decreases")
+        st.dataframe(
+            format_changes_table(decreases),
+            use_container_width=True,
+            hide_index=True
+        )
 
 # Raw data viewer
-st.header("Dataset expander")
-with st.expander("View dataset"):
+st.markdown("---")
+with st.expander("View underlying dataset"):
     st.dataframe(df)
