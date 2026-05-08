@@ -1,295 +1,188 @@
-# 🛒 Supermarket Pricing Dashboard
+# Supermarket Pricing Dashboard
 
-**End-to-end competitive pricing analysis of 5 Spanish supermarket chains**, combining structured data collection, analytical rigor, and business-oriented insights.
+**An interactive competitive pricing analysis tool for the Spanish grocery market**, tracking price positioning, basket economics, and brand strategy across five major supermarket chains.
 
-## 🧠 Methodology (Key Decisions)
+🔗 [Live dashboard](https://your-app.streamlit.app) &nbsp;|&nbsp; 📊 [Dataset](data/Dataset.xlsx) &nbsp;|&nbsp; 📄 [Executive Summary](docs/executive_summary.pdf)
 
-This project focuses on ensuring **comparability across heterogeneous supermarket assortments**, where identical products are not always available.
-
-The following principles guided dataset design:
-
-* **Functional equivalence over exact matching**
-  When identical SKUs were not available, products were selected based on their functional role (e.g. mainstream chocolate cereals), ensuring category-level comparability.
-
-* **Unit normalization for fair comparison**
-  All prices were standardized using price per unit (€/kg, €/L, €/unit) to account for differences in packaging size.
-
-* **Approximate size grouping**
-  Products with varying formats (e.g. 375g vs 625g) were grouped into approximate size tiers (e.g. ~500g).
-
-* **Segmentation when product characteristics affect price**
-  For products such as eggs, where size impacts pricing, categories were split (e.g. M vs L).
-
-* **Segment consistency over packaging consistency**
-  When trade-offs arose, priority was given to comparing equivalent product segments (e.g. private label vs private label).
-
-* **Explicit handling of missing products**
-  Unavailable products were excluded from the dataset to avoid distortions in aggregation.
-  If a product was no longer listed on the supermarket website during the second collection, it was treated as unavailable and excluded from the dataset for that snapshot.
-
-* **Consumer-relevant metrics where applicable**
-  Cost per use (€/wash or €/cycle) was introduced for cleaning products where relevant.
+![Dashboard preview](docs/dashboard_preview.png)
 
 ---
 
-## 📌 Project Overview
+## Overview
 
-### 🎯 Objective
+This project analyses how Mercadona, Consum, Carrefour, Dia, and Alcampo compete on price across five core product categories in the Spanish grocery market. It goes beyond simple price comparison: the tool introduces a product-normalised price index, equivalent basket cost using standardised reference quantities, and a cost-per-use metric for cleaning products — the kind of consumer-relevant framing that raw price data alone cannot provide.
 
-Analyze pricing strategies and competitive positioning across major supermarket chains, combining data analysis with business-oriented insights.
-
-### 🏪 Competitive Set
-
-* Mercadona
-* Consum
-* Carrefour
-* Dia
-* Alcampo
-
-> Consum was included instead of Lidl due to data accessibility constraints and its strong regional presence in the Valencian market.
-
-### 🧺 Product Categories
-
-* Dairy
-* Breakfast
-* Cleaning
-* Fresh Produce
-* Snacks
-
-A consistent basket of **~30 core SKUs** was defined across categories.
+The dashboard was built to answer three practical questions that matter to category managers, retail analysts, and strategy teams:
+- Which chain is genuinely cheapest, and in which specific categories?
+- How large is the private-label advantage, and where does it matter most?
+- Are prices actually stable, or do short-term movements signal competitive activity?
 
 ---
 
-## 📊 Phase 1 — Scope Definition
+## Problem statement
 
-The first phase focused on designing a **clear and analytically robust framework** before data collection.
+Spanish grocery retail is highly concentrated but locally differentiated. Mercadona holds a dominant national position, but regional chains like Consum (strong in Valencia) and hard discounters like Dia compete aggressively in specific categories. Understanding *where* each chain is cheaper — not just *whether* it is cheaper overall — requires category-level analysis that public price indices do not provide.
 
-### 🧠 Product Selection Logic
-
-Exact product matches were not always available across chains. Therefore:
-
-> Products were selected based on **functional equivalence**, ensuring comparability at the category level rather than exact SKU level.
-
-### ⚖️ Handling Packaging Variability
-
-Products differed in size and format (e.g. 375g vs 625g, 4x125g vs 8x125g).
-
-To ensure comparability:
-
-* Products were grouped into **approximate size categories**
-* Prices were normalized using **€/kg, €/L, or €/unit**
-
-Some chains (e.g. Dia) offer different packaging formats for private label products, which may affect perceived value but are normalized through unit pricing.
-
-### 🥚 Controlling for Product Characteristics
-
-For products where size affects pricing:
-
-* Eggs were segmented by size (M vs L)
-* Closest equivalents were selected when standard formats were unavailable
-
-### 🧀 Handling Minor Product Variations
-
-Minor variations within the same product category were accepted when they did not materially affect comparability.
-
-For example:
-
-* Tender vs standard gouda cheese
-* Small differences in product formulation or naming
-
-These were considered equivalent for analysis purposes, ensuring realistic market representation while maintaining analytical consistency.
-
-### 📌 Handling Missing Products
-
-Unavailable products were excluded from the dataset instead of being represented as empty (NaN) rows. This ensures accurate aggregation and avoids distortions.
-
-### 📌 Consumer-Relevant Metrics
-
-For cleaning products:
-
-* Laundry liquid and dishwasher gel → **cost per use**
-* Capsules and tablets → **price per unit = cost per use**
-
-Other categories use standard unit pricing.
-
-### 📌 Brand Benchmarks
-
-Selected national brands were included to complement private label analysis:
-
-* Kellogg's (cereals)
-* Danone (yogurt)
-* Fairy (dishwasher tablets)
-* Lay's (salted crisps)
-
-When unavailable in a chain, observations were treated as missing.
-
-### 📌 Data Collection Methodology
-
-| Chain     | Source           | Date  | Method            |
-| --------- | ---------------- | ----- | ----------------- |
-| Mercadona | Official website | 19/04 | Manual extraction |
-| Consum    | Official website | 19/04 | Manual extraction |
-| Carrefour | Official website | 19/04 | Manual extraction |
-| Dia       | Official website | 19/04 | Manual extraction |
-| Alcampo   | Official website | 19/04 | Manual extraction |
-
-All prices were collected on the same day to ensure **temporal consistency**.
+This dashboard operationalises that analysis for a comparable basket of 31 products across five categories, using two price snapshots to capture short-term pricing dynamics.
 
 ---
 
-## 📊 Phase 2 — Dataset Creation
+## Data
 
-### 🧾 Data Structure
+Data was collected **manually** from the official websites of all five chains across two time snapshots (19 April 2026 and 3 May 2026), resulting in 299 total observations.
 
-Each observation includes:
+| Dimension | Detail |
+|---|---|
+| Chains | Mercadona, Consum, Carrefour, Dia, Alcampo |
+| Categories | Dairy, Breakfast, Cleaning, Fresh Produce, Snacks |
+| Products | 31 SKUs tracked across chains |
+| Snapshots | 2 (two-week interval) |
+| Total observations | 299 |
 
-* product_id
-* product_name
-* package_size
-* brand
-* private_label
-* category
-* chain
-* price (€)
-* unit (kg, L, unit)
-* price_per_unit
-* date
+### Dataset schema
 
-### 🧠 Data Quality & Consistency
-
-To ensure analytical rigor:
-
-* Product definitions were standardized
-* Packaging variability was controlled through approximation
-* Prices were normalized across all observations
-* Missing values were handled explicitly
-
-### 📦 Dataset Summary
-
-* **~30 core SKUs**
-* **5 supermarket chains**
-* Structured for consistent cross-chain comparison
+Each observation includes: `product_id`, `product_name`, `package_size`, `brand`, `private_label`, `category`, `chain`, `price_eur`, `unit`, `price_per_unit`, `cost_per_use` (cleaning only), `comparability_flag`, `date`.
 
 ---
 
-## 📊 Phase 3 — Data Analysis (In Progress)
+## Methodology
 
-This phase focuses on transforming the dataset into **actionable insights** through structured analysis and visualization.
+### Functional equivalence over exact matching
+Identical SKUs are rarely available across five different chains. Products were selected based on functional equivalence within each category (e.g. mainstream chocolate cereals, not a specific brand), ensuring category-level comparability without forcing artificial matches. Products with structural differences that would distort comparison — a 150g premium cheese format vs. standard 200g, or a branded cereal where no private-label equivalent exists — were flagged as `not_comparable` and excluded from indexed analysis.
 
-### 🔎 Current analysis focus
+### Unit normalisation
+All prices are standardised to `€/kg`, `€/L`, or `€/unit` to eliminate the distortions caused by different package sizes across chains.
 
-* Price comparison across chains and categories
-* Identification of cheapest and most expensive chains per category
-* Private label vs branded price differences
-* Detection of outliers and comparability issues
-* Visualization through heatmaps and category-level charts
+### Product-normalised price index
+Rather than averaging raw prices across categories (which would mix €/kg with €/unit), the price index computes each chain's price relative to the market average *for each individual product*, then aggregates those ratios. This produces a meaningful, unit-agnostic positioning score.
 
-### 📈 Planned extensions
+### Equivalent basket cost
+Basket comparisons use standardised reference quantities (e.g. 500g of chicken breast, 1L of milk, 30 dishwasher tablets) applied to each chain's `price_per_unit`. This removes the distortion caused by chains selling different package sizes at different price points.
 
-* Price evolution analysis between collection dates
-* Category-level price index
-* Basket cost comparison across chains
-* Integration into an interactive dashboard (Streamlit)
+### Cost per use (cleaning products)
+For cleaning products, the relevant consumer metric is cost per wash cycle, not cost per litre. Laundry liquid and dishwasher gel are normalised to `€/wash`; tablets and capsules use `€/unit` as the wash equivalent is already fixed.
 
----
-
-## 🔍 Key Insights (Preliminary)
-
-The following insights are based on the initial dataset (first collection) and will be further validated after the second data collection.
-
-### 1. Category drives price differences more than retailer
-
-Preliminary analysis suggests that **price variation across product categories is significantly larger than variation across supermarket chains**.
-
-This indicates that:
-
-* what consumers buy has a stronger impact on spending than where they shop
-* pricing strategies are relatively aligned across competitors within each category
-
-### 2. Private label products consistently undercut branded alternatives
-
-Across categories where both are available, **private label products show a clear price advantage over national brands**.
-
-This suggests:
-
-* supermarkets compete aggressively through own-brand pricing
-* private label positioning is a key driver of perceived affordability
-
-### 3. Product comparability is a critical constraint in real-world analysis
-
-Differences in:
-
-* packaging size
-* product variants
-* availability across chains
-
-introduce **structural limitations** that must be explicitly managed.
-
-This reinforces the importance of:
-
-* functional equivalence
-* unit normalization
-* transparent methodological assumptions
-
-### 4. Assortment differences create competitive blind spots
-
-Some chains:
-
-* do not offer equivalent products (missing SKUs or branded-only options)
-* or use different packaging formats
-
-This affects:
-
-* direct comparability
-* perceived price positioning
-
-and may reflect **strategic assortment decisions rather than pricing differences alone**.
-
-### 5. Early signs of price positioning consistency across chains
-
-Initial comparisons suggest that **no single chain is consistently the cheapest across all categories**.
-
-Instead:
-
-* pricing leadership appears to vary by category
-* suggesting targeted competitive strategies rather than uniform positioning
-
-### ⚠️ Interpretation note
-
-All insights are based on a single snapshot and should be interpreted cautiously.
-
-The second data collection will enable:
-
-* validation of patterns
-* identification of price changes over time
-* stronger, more robust conclusions
+### Temporal comparison
+Identical product-chain pairs are compared between the two snapshots. Only products present in both snapshots are included in the stability analysis.
 
 ---
 
-## 📊 Key Performance Indicators (KPIs)
+## Key findings
 
-### Price KPIs
+These findings are based on the most recent data snapshot (3 May 2026) using comparable, private-label products unless otherwise noted.
 
-* Average price by chain and category
-* Price index (market average = 100)
-* Price per unit
+**1. Mercadona leads overall, but no chain dominates every category.**
+Mercadona has the lowest product-normalised price index (96.4 vs. a market average of 100), followed closely by Consum (97.7). Carrefour sits at 105.0. However, Carrefour leads on breakfast pricing and Alcampo on fresh produce — meaning price leadership is category-specific rather than uniform.
 
-### Competitive Positioning
+**2. The private-label premium is real and largest where it matters most.**
+Branded breakfast products cost approximately 18% more than private-label equivalents per unit. In snacks, the premium is 8%. The cleaning category shows the starkest contrast at the product level: switching from Fairy branded dishwasher tablets to Mercadona's Bosque Verde equivalent saves roughly 70% per wash cycle (€0.167 vs €0.098).
 
-* Cheapest chain per category
-* Most expensive chain per category
-* Price gap (%)
+**3. The equivalent basket gap is smaller than perceived.**
+Buying a standardised 31-product private-label basket at Consum (cheapest, €29.66) vs. Alcampo (most expensive, €31.78) saves €2.12 per trip — a 7.1% difference. The common perception that supermarket choice dramatically affects grocery spend is not well-supported by this data at the category level.
 
-### Brand Structure
+**4. Cleaning is the most contested category; breakfast is the most commoditised.**
+Price dispersion across chains is highest in cleaning (σ = 25.4 index points) and lowest in breakfast (σ = 5.5). This suggests chains compete aggressively on cleaning — likely because private-label cleaning products are a key driver of value perception — while breakfast pricing is relatively aligned.
 
-* Private label share
-* Private label vs branded price gap
+**5. Prices are highly stable in the short term, with targeted branded exceptions.**
+88% of comparable product-chain pairs changed by less than 1% over the two-week window. The largest movements were concentrated in branded products: Consum reduced Dolce Gusto coffee capsules by 20.2% and Fairy dishwasher tablets by 20.0% between snapshots — consistent with a promotional repricing event rather than a structural strategy shift.
 
 ---
 
-## ⚙️ Constraints
+## Dashboard features
 
-* Manual data collection (no scraping)
-* Two discrete snapshots (temporal comparison)
-* No store-level variation
-* Focus on Valencia region
+- **Global filters** — Date, category, and chain filters applied across all analysis sections via a single form submission
+- **Executive summary** — Four key metrics (cheapest chain, basket gap, brand premium category, price stability) visible before any scrolling
+- **Price index** — Product-normalised chain ranking with a 90–110 index range, highlighting the market average benchmark
+- **Category heatmap** — Cross-tab of chain vs. category index values, colour-coded to show where each chain is cheap or expensive
+- **Price dispersion** — Standard deviation of the price index by category, identifying competitive vs. commoditised segments
+- **Category price leadership** — Which chain wins each category and how often
+- **Equivalent basket cost** — Normalised 25-product private-label basket comparison using standardised quantities
+- **Brand premium analysis** — Grouped bar chart of private-label vs. branded average prices by category
+- **Cost per use** — Faceted chart of €/wash across four cleaning product types and five chains
+- **Temporal dynamics** — Price stability metrics, category-level average change, and a detailed expander of individual price movements
+- **Product deep dive** — Per-product explorer with price by chain, market positioning index, and price over time across both snapshots
+- **Implication layer** — Each section ends with a strategic interpretation, not just a description of the chart
+
+---
+
+## Tech stack
+
+| Layer | Tool |
+|---|---|
+| Data collection | Manual (Excel/Google Sheets) |
+| Data processing | Python · Pandas · NumPy |
+| Exploratory analysis | Jupyter Notebook |
+| Dashboard | Streamlit |
+| Visualisation | Plotly Express |
+| Deployment | Streamlit Community Cloud |
+
+---
+
+## Repository structure
+
+```
+supermarket-pricing-dashboard/
+│
+├── data/
+│   └── Dataset.xlsx          # Full dataset (both snapshots)
+│
+├── docs/
+│   ├── executive_summary.pdf # One-page business brief
+│   └── dashboard_preview.png
+│
+├── notebooks/
+│   └── analysis.ipynb        # Exploratory analysis and price index methodology
+│
+├── app.py                    # Streamlit dashboard
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Running locally
+
+**Prerequisites:** Python 3.9+
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/supermarket-pricing-dashboard.git
+cd supermarket-pricing-dashboard
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the dashboard
+streamlit run app.py
+```
+
+The app expects the dataset at `data/Dataset.xlsx`. If you move the file, update the path in the `load_data()` function in `app.py`.
+
+**Dependencies:**
+```
+streamlit
+pandas
+plotly
+openpyxl
+numpy
+```
+
+---
+
+## Limitations and next steps
+
+The current dataset is a manual two-snapshot collection, which limits temporal depth. The analysis reflects a specific regional market (Valencia) and may not generalise to national pricing, which varies by store format and location.
+
+Planned extensions:
+- Automated weekly price scraping to build a continuous time series
+- Store-level price variation within chains
+- Basket optimisation tool (cheapest chain for a user-defined product list)
+- Category elasticity estimation as more snapshots accumulate
+
+---
+
+## About
+
+Built by [Gabriela Rego Jamhour](https://gabrielajamhour.github.io) as part of a portfolio project combining data engineering, analytical methodology, and business strategy. Background in Computer Engineering + Business (ADE), with experience in 180DC consulting and full-stack development.
+
+Data collected: April–May 2026 · Market: Spanish grocery retail (Valencia region)
