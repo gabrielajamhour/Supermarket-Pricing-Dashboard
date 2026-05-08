@@ -2,7 +2,7 @@
 
 **An interactive competitive pricing analysis tool for the Spanish grocery market**, tracking price positioning, basket economics, and brand strategy across five major supermarket chains.
 
-🔗 [Live dashboard](https://your-app.streamlit.app) &nbsp;|&nbsp; 📊 [Dataset](data/Dataset.xlsx) &nbsp;|&nbsp; 📄 [Executive Summary](docs/executive_summary.pdf)
+🔗 [Live dashboard](https://supermarket-pricing-dashboard.streamlit.app) &nbsp;|&nbsp; 📊 [Dataset](data/Dataset.xlsx) &nbsp;|&nbsp; 📄 [Executive Summary](docs/executive_summary.pdf)
 
 ![Dashboard preview](docs/dashboard_preview.png)
 
@@ -142,7 +142,7 @@ supermarket-pricing-dashboard/
 
 ## Running locally
 
-**Prerequisites:** Python 3.9+
+**Prerequisites:** Python 3.11+
 
 ```bash
 # Clone the repository
